@@ -1,0 +1,13 @@
+https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#reference
+https://docs.spring.io/spring-security/site/docs/3.0.x/reference/preface.html
+https://laptrinhjavaweb.com/huong-dan-tao-project-spring-mvc-su-dung-xml-configuration-8
+https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
+https://www.tutorialspoint.com/jsp/jsp_standard_tag_library.htm
+http://wiki.sitemesh.org/wiki/display/sitemesh/Home
+
+https://techmaster.vn/posts/36295/spring-security-ban-sau-ve-authentication-va-authorization-p1
+https://techmaster.vn/posts/36312/spring-security-ban-sau-ve-authentication-va-authorization-p2
+https://www.marcobehler.com/guides/spring-security#security-examples
+
+https://openplanning.net/10305/ung-dung-java-web-login-don-gian-su-dung-spring-mvc-spring-security-va-spring-jdbc
+https://openplanning.net/11705/tao-ung-dung-login-voi-spring-boot-spring-security-jpa
