@@ -7,9 +7,9 @@
       <i class="fas fa-bars"></i>
     </button>
     
-    <div class="">
-    	Xin chào, ${pageContext.request.userPrincipal.name}
-    </div>
+    <a style="color: white;">
+    	Xin chào, ${name}
+    </a>
 	| &nbsp;
      <a href="${pageContext.request.contextPath}/logout">Đăng xuất</a>
 	

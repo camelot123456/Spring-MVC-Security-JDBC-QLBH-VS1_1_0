@@ -1,10 +1,13 @@
 package com.springtutorials.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class AbstractModel {
 
 	protected String id;
+	protected List<String> ids = new ArrayList<>();
 	protected String slug;
 	protected Date createdAt;
 	protected String createdBy;
@@ -84,6 +87,14 @@ public class AbstractModel {
 
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+
+	public List<String> getIds() {
+		return ids;
+	}
+
+	public void setIds(List<String> ids) {
+		this.ids = ids;
 	}
 
 }

@@ -98,6 +98,7 @@
   <script src="<c:url value='/template/admin/js/demo/datatables-demo.js'/>"></script>
   <script src="<c:url value='/template/admin/js/demo/chart-area-demo.js'/>"></script>
 
+ 
 </body>
 
 </html>

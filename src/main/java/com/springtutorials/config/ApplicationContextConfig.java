@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
-@ComponentScan("com.springtutorials.*")
+@ComponentScan({"com.springtutorials.*"})
 @EnableTransactionManagement
 @PropertySource("classpath:db.properties")
 public class ApplicationContextConfig {

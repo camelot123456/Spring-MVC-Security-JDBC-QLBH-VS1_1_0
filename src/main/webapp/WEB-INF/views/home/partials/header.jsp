@@ -7,9 +7,9 @@
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div>
-      	Xin chào, ${pageContext.request.userPrincipal.name}
-      </div>
+      <a style="color: white;">
+      	Xin chào, ${name}
+      </a>
       | &nbsp;
      <a href="${pageContext.request.contextPath}/logout">Đăng xuất</a>
       <div class="collapse navbar-collapse" id="navbarResponsive">

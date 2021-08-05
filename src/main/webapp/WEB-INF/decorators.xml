@@ -12,5 +12,6 @@
     
     <excludes>
     	<pattern>/login*</pattern>
+    	<pattern>/admin/product/add-handler</pattern>
     </excludes>
 </decorators>

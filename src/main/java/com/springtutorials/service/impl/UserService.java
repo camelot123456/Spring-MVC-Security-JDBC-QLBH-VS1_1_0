@@ -21,4 +21,16 @@ public class UserService implements IUserService{
 		return userDAO.find();
 	}
 
+	@Override
+	public List<String> findRoleByUsername(String username) {
+		// TODO Auto-generated method stub
+		return userDAO.findRoleByUsername(username);
+	}
+
+	@Override
+	public UserModel findOneByUsername(String username) {
+		// TODO Auto-generated method stub
+		return userDAO.findOneByUsername(username);
+	}
+
 }

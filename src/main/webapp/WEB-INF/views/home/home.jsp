@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-	<h1>Hello ${name}</h1>
 	<!-- Heading Row -->
     <div class="row align-items-center my-5">
       <div class="col-lg-7">

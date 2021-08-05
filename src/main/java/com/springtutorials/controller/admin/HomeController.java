@@ -21,7 +21,7 @@ public class HomeController {
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String adminHome(Model model, Principal principal) {
 		if (principal != null) {
-			model.addAttribute("name", principal.getName());
+			model.addAttribute("name", userService.findOneByUsername(principal.getName()).getFullname());
 		}
 		return "admin/home";
 	}
