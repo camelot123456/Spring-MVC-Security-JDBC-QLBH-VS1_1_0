@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/WEB-INF/views/">
+
+    <decorator name="web-home" page="home/layouts/main.jsp">
+        <pattern>/web-home</pattern>
+        <pattern>/</pattern>
+    </decorator>
+    
+    <decorator name="admin-home" page="admin/layouts/main.jsp">
+        <pattern>/admin*</pattern>
+    </decorator>
+    
+    <decorator name="authentication-login" page="authentication/layouts/main.jsp">
+        <pattern>/login</pattern>
+        <pattern>/register*</pattern>
+        <pattern>/forgot-password*</pattern>
+    	<pattern>/404</pattern>
+    </decorator>
+    
+    <excludes>
+    	
+    	<pattern>/admin/product/add-handler</pattern>
+    </excludes>
+</decorators>
