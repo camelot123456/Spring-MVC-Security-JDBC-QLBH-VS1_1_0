@@ -73,4 +73,22 @@ public class ProductDAO extends JdbcDaoSupport implements IProductDAO{
 		this.getJdbcTemplate().update(sql, params);
 	}
 
+	@Override
+	public void updateOneDeletedByID(String id, Boolean deleted) {
+		// TODO Auto-generated method stub
+		String sql = "UPDATE PRODUCT SET IS_DELETED = ? WHERE ID = ?";
+		Object[] params = new Object[] {deleted ,id};
+		this.getJdbcTemplate().update(sql, params);
+	}
+
+	@Override
+	public List<ProductModel> findByDeleted(Boolean deleted) {
+		// TODO Auto-generated method stub
+		String sql = "SELECT * FROM PRODUCT WHERE IS_DELETED = ?";
+		Object[] params = new Object[] {deleted};
+		ProductMapper mapper = new ProductMapper();
+		List<ProductModel> list = this.getJdbcTemplate().query(sql, params, mapper);
+		return list;
+	}
+
 }

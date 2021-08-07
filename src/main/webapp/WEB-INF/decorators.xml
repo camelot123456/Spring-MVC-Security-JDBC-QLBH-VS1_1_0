@@ -10,8 +10,15 @@
         <pattern>/admin*</pattern>
     </decorator>
     
+    <decorator name="authentication-login" page="authentication/layouts/main.jsp">
+        <pattern>/login</pattern>
+        <pattern>/register*</pattern>
+        <pattern>/forgot-password*</pattern>
+    	<pattern>/404</pattern>
+    </decorator>
+    
     <excludes>
-    	<pattern>/login*</pattern>
+    	
     	<pattern>/admin/product/add-handler</pattern>
     </excludes>
 </decorators>

@@ -14,6 +14,16 @@ public class AuthorizationController {
 	public String loginPage() {
 		return "authentication/login";
 	}
+	
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	public String registerPage() {
+		return "authentication/register";
+	}
+	
+	@RequestMapping(value = "/forgot-password", method = RequestMethod.GET)
+	public String forgotPasswordPage() {
+		return "authentication/forgot-password";
+	}
 
 	@RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
 	public String logoutHandler() {

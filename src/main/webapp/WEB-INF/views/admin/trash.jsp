@@ -3,17 +3,17 @@
 <%@ include file="/taglib.jsp"%>
 <form class="container mt-4" id='form-data'> 
 	<div class="row">
-		<h3 class="btn-link">Danh sách sản phẩm</h3>
+		<h3 class="btn-link">Thùng rác</h3>
 	</div>
 	<hr>
 	<div>
 		<div class="row">
 			<div class="col-6 d-flex flex-row">
-				<a class="p-2 btn-link" href="/admin/product/add">Thêm mới sản phẩm</a>
+				<a class="p-2 btn-link" href="/admin/product/display">Quay lại danh sách</a>
 			</div>
 			<div class="col-6 d-flex flex-row-reverse">
+				<button class="p-2 ml-4 btn btn-outline-success btn-sm btn-restore-all" hidden>Khôi phục</button>
 				<button class="p-2 ml-4 btn btn-outline-danger btn-sm btn-delete-all" hidden>Xóa</button>
-				<a class="p-2 btn-link ml-4" href="/admin/trash">Thùng rác (${productsTrashCount})</a>
 			</div>
 		</div>
 		
@@ -25,29 +25,27 @@
 		      <th scope="col">ID</th>
 		      <th scope="col">Ảnh</th>
 		      <th scope="col">Tên</th>
-		      <th scope="col">Số lượng</th>
-		      <th scope="col">Đơn giá</th>
+		      <th scope="col">Thời gian xóa</th>
 		      <th scope="col">ID danh mục</th>
 		      <th scope="col" class="text-center">Công cụ</th>
 		    </tr>
 		  </thead>
 		  <tbody>
-		  	<c:if test="${empty products.pageList}">
-		  		<h3>Danh sách rỗng. <a class="btn-link" href="/admin/product/add">Thêm mới sản phẩm</a></h3>
+		  	<c:if test="${empty productsTrash}">
+		  		<h3>Thùng rác rỗng. <a class="btn-link" href="/admin/product/display">Quay lại danh sách</a></h3>
 		  	</c:if>
-		    <c:forEach varStatus="loop" var="product" items="${products.pageList}">
+		    <c:forEach varStatus="loop" var="product" items="${productsTrash}">
 		    	<tr id="row-table">
 		    	  <th><input type="checkbox" id="checkbox-element" value="${product.id}"></th>
 			      <th scope="row">${loop.count}</th>
 			      <td>${product.id}</td>
 			      <td><img style="width: 100px;" src="${product.image}"/></td>
 			      <td>${product.name}</td>
-			      <td>${product.quantity}</td>
-			      <td>${product.price}</td>
+			      <td>${product.deletedAt}</td>
 			      <td>${product.categoryId}</td>
 			      <td>
 			      	<a class="btn-link" href="/admin/product/${product.id}">Chi tiết</a> | 
-			      	<a class="btn-link" href="/admin/product/${product.id}/edit">Sửa</a> | 
+			      	<a type="submit" title="${product.id}" class="btn-link btn-delete" href="">Khôi phục</a> | 
 			      	<a type="submit" title="${product.id}" class="btn-link btn-delete" href="">Xóa</a>
 			      </td>
 			    </tr>
@@ -63,7 +61,7 @@
 			    <li class="page-item">
 			      <a class="page-link" href="/admin/product/display/prev"><</a>
 			    </li>
-			    <c:forEach varStatus="loop" var="page" begin="1" end="${pageCount}">
+			    <c:forEach varStatus="loop" var="page" begin="1" end="${pageCountTrash}">
 				    <li class="page-item handlers"><a class="page-link" href="/admin/product/display/${loop.count}">${loop.count}</a></li>
 			    </c:forEach>
 			    <li class="page-item">
@@ -86,11 +84,10 @@
 	var btnDelete = Array.from($$('.btn-delete'));
 	
 	
-	
-	//-------------------------------------------tạo phương thức xóa mềm một sản phẩm------------------------------------------------------------------------------------------//
-	async function soft_delete_data(data){
-		await fetch('/admin/product/'+data.id+'/soft-delete-handler',{
-			method: 'PATCH',
+	//-------------------------------------------tạo phương thức xóa một sản phẩm------------------------------------------------------------------------------------------//
+	async function delete_data(data){
+		await fetch('/admin/product/'+data.id+'/delete-handler',{
+			method: 'DELETE',
 			headers:{
 				'Content-Type': 'application/json',
 				'Accept': 'application/json'
@@ -103,17 +100,17 @@
 	
 	
 	
-	//-------------------------------------------Xử lý nút nhấn xóa mềm một sản phẩm------------------------------------------------------------------------------------------//
+	//-------------------------------------------Xử lý nút nhấn xóa một sản phẩm------------------------------------------------------------------------------------------//
 	btnDelete.forEach((element)=>{
 		element.addEventListener('click', (e)=>{
 			e.preventDefault();
 			var thisRow = Array.from($$('#row-table'));
-			var res = confirm('Bạn có muốn xóa sản phẩm này??')
+			var res = confirm('Bạn có muốn xóa vĩnh viễn sản phẩm này??')
 			
 			if (res) {
 				var productId = element.title
 				var data = {'id': productId}
-				soft_delete_data(data);
+				delete_data(data);
 				location.reload();
 			} else{
 				return;
@@ -127,7 +124,6 @@
 	var checkboxAll = $('#checkbox-all')
 	var checkboxElements = Array.from($$('#checkbox-element'))
 	var btnDeleteAll = $('.btn-delete-all')
-	var btnRestoreAll = $('.btn-restore-all')
 	
 	checkboxAll.addEventListener('change', (e)=>{
 		checkboxElements.forEach((element)=>{
@@ -136,10 +132,8 @@
 		})
 		if (checkboxAll.checked) {
 			btnDeleteAll.removeAttribute('hidden')
-			btnRestoreAll.removeAttribute('hidden')
 		} else{
 			btnDeleteAll.setAttribute('hidden', 'hidden')
-			btnRestoreAll.setAttribute('hidden', 'hidden')
 		}
 	})
 	
@@ -153,20 +147,18 @@
 			checkboxAll.checked = countCur != countPrev ? false : true;
 			if (countCur > 0) {
 				btnDeleteAll.removeAttribute('hidden')
-				btnRestoreAll.removeAttribute('hidden')
 			} else{
 				btnDeleteAll.setAttribute('hidden', 'hidden')
-				btnRestoreAll.setAttribute('hidden', 'hidden')
 			}
 		})
 	})
 	
 	
 	
-	//-------------------------------------------tạo phương thức xóa mềm nhiều sản phẩm------------------------------------------------------------------------------------------//
-	async function soft_delete_multi_data(data){
-		await fetch('/admin/product/soft-delete-multi-handler',{
-			method: 'PATCH',
+	//-------------------------------------------tạo phương thức xóa nhiều sản phẩm------------------------------------------------------------------------------------------//
+	async function delete_multi_data(data){
+		await fetch('/admin/product/delete-multi-handler',{
+			method: 'DELETE',
 			headers:{
 				'Content-Type': 'application/json',
 				'Accept': 'application/json'
@@ -186,7 +178,7 @@
 	//-------------------------------------------Xử lý nút nhấn xóa nhiều sản phẩm------------------------------------------------------------------------------------------//
 	btnDeleteAll.addEventListener('click', (e)=>{
 		e.preventDefault();
-		var res = confirm('Bạn n xóa những sản phẩm này không??')
+		var res = confirm('Bạn có muốn khôi phục những sản phẩm này không??')
 		
 		if (res) {
 			var arrProductId = []
@@ -196,7 +188,7 @@
 			})
 			var data = {'ids': arrProductId}
 			console.log(data)
-			soft_delete_multi_data(data);
+			delete_multi_data(data);
 			location.reload();
 			
 		} else{

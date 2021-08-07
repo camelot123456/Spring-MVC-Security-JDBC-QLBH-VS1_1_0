@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.springtutorials.model.UserModel;
+import com.springtutorials.service.IProductService;
 import com.springtutorials.service.IUserService;
 
 @Controller(value = "admin")
@@ -18,12 +19,21 @@ public class HomeController {
 	@Autowired
 	private IUserService userService;
 	
+	@Autowired
+	private IProductService productService;
+	
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String adminHome(Model model, Principal principal) {
 		if (principal != null) {
 			model.addAttribute("name", userService.findOneByUsername(principal.getName()).getFullname());
 		}
 		return "admin/home";
+	}
+	
+	@RequestMapping(value = "/admin/trash", method = RequestMethod.GET)
+	public String adminTrash(Model model) {
+		model.addAttribute("productsTrash", productService.findByDeleted(Boolean.TRUE));
+		return "admin/trash";
 	}
 	
 	@RequestMapping(value = "/admin-info", method = RequestMethod.GET)

@@ -14,6 +14,8 @@ public class ProductMapper implements RowMapper<ProductModel>{
 		// TODO Auto-generated method stub
 		ProductModel product = new ProductModel();
 		
+		product.setDeletedAt((rs.getDate("DELETED_AT")));
+		
 		product.setId(rs.getString("ID"));
 		product.setName(rs.getString("NAME"));
 		product.setQuantity(rs.getInt("QUANTITY"));

@@ -15,5 +15,9 @@ public interface IProductDAO {
 	void updateOne(ProductModel product);
 
 	void deleteOne(String id);
+	
+	void updateOneDeletedByID(String id, Boolean deleted);
+
+	List<ProductModel> findByDeleted(Boolean deleted);
 
 }
