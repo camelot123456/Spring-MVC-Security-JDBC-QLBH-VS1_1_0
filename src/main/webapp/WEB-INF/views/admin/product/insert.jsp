@@ -3,7 +3,7 @@
 <%@include file="/taglib.jsp" %>
 <div class="container mt-4">
 	<h3>Thêm mới sản phẩm</h3>
-	<div class="row">
+	<div>
 		<form id="form-insert">
 		  	<div class="form-group row">
 		  		<label for="categoryIdc" class="col-sm-4 col-form-label">Mã danh mục cha</label>

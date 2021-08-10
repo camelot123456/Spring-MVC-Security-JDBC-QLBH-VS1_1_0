@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -117,7 +118,7 @@ public class ProductAPI {
 	
 	
 	//-------------------------------------------Xử lý xóa một sản phẩm------------------------------------------------------------------------------------------//
-	@PatchMapping(value = "/admin/product/{id}/delete-handler", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@DeleteMapping(value = "/admin/product/{id}/delete-handler", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ModelAndView deleteProduct(@PathVariable(value = "id") String id) {
 		productService.deleteOne(id);
 		ModelAndView mav = new ModelAndView("redirect:/admin/product");
@@ -127,7 +128,7 @@ public class ProductAPI {
 	
 	
 	//-------------------------------------------Xử lý xóa nhiều sản phẩm------------------------------------------------------------------------------------------//
-	@PatchMapping(value = "/admin/product/delete-multi-handler", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@DeleteMapping(value = "/admin/product/delete-multi-handler", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ModelAndView deleteMultilProduct(@RequestBody ProductModel product) {
 		productService.deleteMany(product.getIds());
 		ModelAndView mav = new ModelAndView("redirect:/admin/product");

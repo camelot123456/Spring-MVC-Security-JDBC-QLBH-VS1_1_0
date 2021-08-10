@@ -114,7 +114,9 @@
 				var productId = element.title
 				var data = {'id': productId}
 				soft_delete_data(data);
-				location.reload();
+				setTimeout(()=>{
+					location.reload()
+				}, 500);
 			} else{
 				return;
 			}
@@ -127,7 +129,6 @@
 	var checkboxAll = $('#checkbox-all')
 	var checkboxElements = Array.from($$('#checkbox-element'))
 	var btnDeleteAll = $('.btn-delete-all')
-	var btnRestoreAll = $('.btn-restore-all')
 	
 	checkboxAll.addEventListener('change', (e)=>{
 		checkboxElements.forEach((element)=>{
@@ -136,10 +137,8 @@
 		})
 		if (checkboxAll.checked) {
 			btnDeleteAll.removeAttribute('hidden')
-			btnRestoreAll.removeAttribute('hidden')
 		} else{
 			btnDeleteAll.setAttribute('hidden', 'hidden')
-			btnRestoreAll.setAttribute('hidden', 'hidden')
 		}
 	})
 	
@@ -153,10 +152,8 @@
 			checkboxAll.checked = countCur != countPrev ? false : true;
 			if (countCur > 0) {
 				btnDeleteAll.removeAttribute('hidden')
-				btnRestoreAll.removeAttribute('hidden')
 			} else{
 				btnDeleteAll.setAttribute('hidden', 'hidden')
-				btnRestoreAll.setAttribute('hidden', 'hidden')
 			}
 		})
 	})
@@ -186,7 +183,7 @@
 	//-------------------------------------------Xử lý nút nhấn xóa nhiều sản phẩm------------------------------------------------------------------------------------------//
 	btnDeleteAll.addEventListener('click', (e)=>{
 		e.preventDefault();
-		var res = confirm('Bạn n xóa những sản phẩm này không??')
+		var res = confirm('Bạn muốn xóa những sản phẩm này không??')
 		
 		if (res) {
 			var arrProductId = []
@@ -197,7 +194,9 @@
 			var data = {'ids': arrProductId}
 			console.log(data)
 			soft_delete_multi_data(data);
-			location.reload();
+			setTimeout(()=>{
+				location.reload()
+			}, 500);
 			
 		} else{
 			return;

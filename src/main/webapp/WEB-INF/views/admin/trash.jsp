@@ -44,8 +44,8 @@
 			      <td>${product.deletedAt}</td>
 			      <td>${product.categoryId}</td>
 			      <td>
-			      	<a class="btn-link" href="/admin/product/${product.id}">Chi tiết</a> | 
-			      	<a type="submit" title="${product.id}" class="btn-link btn-delete" href="">Khôi phục</a> | 
+			      	<a class="btn-link" href="/admin/product/${product.id}/detail">Chi tiết</a> | 
+			      	<a type="submit" title="${product.id}" class="btn-link btn-restore" href="">Khôi phục</a> | 
 			      	<a type="submit" title="${product.id}" class="btn-link btn-delete" href="">Xóa</a>
 			      </td>
 			    </tr>
@@ -82,6 +82,7 @@
 	var $$ = document.querySelectorAll.bind(document);
 	
 	var btnDelete = Array.from($$('.btn-delete'));
+	var btnRestore = Array.from($$('.btn-restore'));
 	
 	
 	//-------------------------------------------tạo phương thức xóa một sản phẩm------------------------------------------------------------------------------------------//
@@ -111,11 +112,13 @@
 				var productId = element.title
 				var data = {'id': productId}
 				delete_data(data);
-				location.reload();
+				setTimeout(()=>{
+					location.reload()
+				}, 500);
 			} else{
 				return;
 			}
-		})
+		})	
 	})
 	
 	
@@ -124,6 +127,7 @@
 	var checkboxAll = $('#checkbox-all')
 	var checkboxElements = Array.from($$('#checkbox-element'))
 	var btnDeleteAll = $('.btn-delete-all')
+	var btnRestoreAll = $('.btn-restore-all')
 	
 	checkboxAll.addEventListener('change', (e)=>{
 		checkboxElements.forEach((element)=>{
@@ -132,8 +136,10 @@
 		})
 		if (checkboxAll.checked) {
 			btnDeleteAll.removeAttribute('hidden')
+			btnRestoreAll.removeAttribute('hidden')
 		} else{
 			btnDeleteAll.setAttribute('hidden', 'hidden')
+			btnRestoreAll.setAttribute('hidden', 'hidden')
 		}
 	})
 	
@@ -147,8 +153,10 @@
 			checkboxAll.checked = countCur != countPrev ? false : true;
 			if (countCur > 0) {
 				btnDeleteAll.removeAttribute('hidden')
+				btnRestoreAll.removeAttribute('hidden')
 			} else{
 				btnDeleteAll.setAttribute('hidden', 'hidden')
+				btnRestoreAll.setAttribute('hidden', 'hidden')
 			}
 		})
 	})
@@ -178,7 +186,7 @@
 	//-------------------------------------------Xử lý nút nhấn xóa nhiều sản phẩm------------------------------------------------------------------------------------------//
 	btnDeleteAll.addEventListener('click', (e)=>{
 		e.preventDefault();
-		var res = confirm('Bạn có muốn khôi phục những sản phẩm này không??')
+		var res = confirm('Bạn có muốn xóa những sản phẩm này không??')
 		
 		if (res) {
 			var arrProductId = []
@@ -189,13 +197,96 @@
 			var data = {'ids': arrProductId}
 			console.log(data)
 			delete_multi_data(data);
-			location.reload();
+			setTimeout(()=>{
+				location.reload()
+			}, 500);
 			
 		} else{
 			return;
 		}
 	})
 	
+	
+	
+	//-------------------------------------------tạo phương thức khôi phục một sản phẩm------------------------------------------------------------------------------------------//
+	async function restore_data(data){
+		await fetch('/admin/product/'+data.id+'/restore-handler',{
+			method: 'PATCH',
+			headers:{
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
+			},
+			body: JSON.stringify(data)
+		})
+		.then(response => response.json())
+		.then(data => console.log(data));
+	}
+	
+	
+	
+	//-------------------------------------------Xử lý nút nhấn khôi phục một sản phẩm------------------------------------------------------------------------------------------//
+	btnRestore.forEach((element)=>{
+		element.addEventListener('click', (e)=>{
+			e.preventDefault();
+			var thisRow = Array.from($$('#row-table'));
+			var res = confirm('Bạn có muốn khôi phục sản phẩm này??')
+			
+			if (res) {
+				var productId = element.title
+				var data = {'id': productId}
+				restore_data(data);
+				setTimeout(()=>{
+					location.reload()
+				}, 500);
+			} else{
+				return;
+			}
+		})	
+	})
+	
+	
+	//-------------------------------------------tạo phương thức khôi phục nhiều sản phẩm------------------------------------------------------------------------------------------//
+	async function restore_multi_data(data){
+		await fetch('/admin/product/restore-multi-handler',{
+			method: 'PATCH',
+			headers:{
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
+			},
+			body: JSON.stringify(data)
+		})
+		.then(response => response.json())
+		.then(data => console.log(data));
+	}
+	
+			/* var formData = new FormData($('#form-data'))
+			var arrProductId = formData.getAll('ids')
+			var data = {'ids': arrProductId} */
+		
+	
+			
+	//-------------------------------------------Xử lý nút nhấn khôi phục nhiều sản phẩm------------------------------------------------------------------------------------------//
+	btnRestoreAll.addEventListener('click', (e)=>{
+		e.preventDefault();
+		var res = confirm('Bạn có muốn khôi phục những sản phẩm này không??')
+		
+		if (res) {
+			var arrProductId = []
+			var ids = Array.from($$('#row-table input[type="checkbox"]:checked'))
+			ids.forEach((element)=>{
+				arrProductId.push(element.value)
+			})
+			var data = {'ids': arrProductId}
+			console.log(data)
+			restore_multi_data(data);
+			setTimeout(()=>{
+				location.reload()
+			}, 500);
+			
+		} else{
+			return;
+		}
+	})
 	
 	
 	
